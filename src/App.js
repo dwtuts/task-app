@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from "./components/Header.js";
 import Tasks from "./components/Tasks.js";
 import AddTask from "./components/AddTask.js";
+import About from "./components/About.js";
+import Footer from "./components/Footer.js";
 
 function App() {
   const [showAddTask, setShowAddTask] = useState(false);
@@ -65,7 +68,7 @@ function App() {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(updatedTask)
+      body: JSON.stringify(updatedTask),
     });
 
     const data = await res.json();
@@ -78,18 +81,32 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <Header
-        onAdd={() => setShowAddTask(!showAddTask)}
-        showAdd={showAddTask}
-      />
-      {showAddTask && <AddTask onAdd={addTask} />}
-      {tasks.length > 0 ? (
-        <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />
-      ) : (
-        "It looks empty in here..."
-      )}
-    </div>
+    <Router>
+      <div className="container">
+        <Header
+          onAdd={() => setShowAddTask(!showAddTask)}
+          showAdd={showAddTask}
+        />
+        
+        <Route path='/' exact render={(props) => (
+          <>
+            {showAddTask && <AddTask onAdd={addTask} />}
+            {tasks.length > 0 ? (
+                  <Tasks
+                    tasks={tasks}
+                    onDelete={deleteTask}
+                    onToggle={toggleReminder}
+                  />
+                ) : (
+                  "It looks empty in here..."
+                )}
+          </>
+        )} />
+        
+        <Route path='/about' component={About} />
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
