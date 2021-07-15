@@ -75,7 +75,7 @@ function App() {
 
     setTasks(
       tasks.map((task) =>
-        task.id === id ? { ...task, reminder: !data.reminder } : task
+        task.id === id ? { ...task, reminder: data.reminder } : task
       )
     );
   };
@@ -87,23 +87,27 @@ function App() {
           onAdd={() => setShowAddTask(!showAddTask)}
           showAdd={showAddTask}
         />
-        
-        <Route path='/' exact render={(props) => (
-          <>
-            {showAddTask && <AddTask onAdd={addTask} />}
-            {tasks.length > 0 ? (
-                  <Tasks
-                    tasks={tasks}
-                    onDelete={deleteTask}
-                    onToggle={toggleReminder}
-                  />
-                ) : (
-                  "It looks empty in here..."
-                )}
-          </>
-        )} />
-        
-        <Route path='/about' component={About} />
+
+        <Route
+          path="/"
+          exact
+          render={(props) => (
+            <>
+              {showAddTask && <AddTask onAdd={addTask} />}
+              {tasks.length > 0 ? (
+                <Tasks
+                  tasks={tasks}
+                  onDelete={deleteTask}
+                  onToggle={toggleReminder}
+                />
+              ) : (
+                "It looks empty in here..."
+              )}
+            </>
+          )}
+        />
+
+        <Route path="/about" component={About} />
         <Footer />
       </div>
     </Router>
